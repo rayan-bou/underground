@@ -1,33 +1,29 @@
 package me.blafexe.zone;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ZoneHandler implements Listener {
 
     private final Plugin plugin;
-    //Stores a world's name and the associated spaces
+    //Stores all zones
     private final Set<Zone> zoneSet;
-    //Stores players, that cannot receive damage
-    private final Set<Player> protectedPlayerSet;
 
     public ZoneHandler(Plugin plugin) {
         this.plugin = plugin;
         zoneSet = new HashSet<>();
-        protectedPlayerSet = new HashSet<>();
     }
 
     public void addZone(Zone zone) {
@@ -37,14 +33,6 @@ public class ZoneHandler implements Listener {
 
     public void removeZone(Zone zone) {
         zoneSet.remove(zone);
-    }
-
-    public void addProtectedPlayer(Player player) {
-        protectedPlayerSet.add(player);
-    }
-
-    public void removeProtectedPlayer(Player player) {
-        protectedPlayerSet.remove(player);
     }
 
     /**
@@ -68,16 +56,8 @@ public class ZoneHandler implements Listener {
             oldSpaces.removeAll(newSpaces);
             newSpaces.removeAll(tempOldSpaces);
 
-            oldSpaces.forEach(space -> {
-                scheduler.runTask(plugin, () -> {
-                    space.onLeave(player, from, to);
-                });
-            });
-            newSpaces.forEach(space -> {
-                scheduler.runTask(plugin, () -> {
-                    space.onEnter(player, from, to);
-                });
-            });
+            oldSpaces.forEach(space -> scheduler.runTask(plugin, () -> space.onLeave(player, from, to)));
+            newSpaces.forEach(space -> scheduler.runTask(plugin, () -> space.onEnter(player, from, to)));
 
         });
     }
@@ -123,23 +103,4 @@ public class ZoneHandler implements Listener {
         asyncHandleMovement(event.getPlayer(), event.getPlayer().getLastDeathLocation(), event.getRespawnLocation());
     }
 
-    /**
-     * Is triggered by the <code>EntityDamageEvent</code>. Cancels the event, if the damaged player is contained within
-     * the <code>protectedPlayers</code> set.
-     */
-    @EventHandler
-    public void onPlayerDamage(EntityDamageEvent event) {
-
-        if (event.getEntity() instanceof Player player) {
-            if (protectedPlayerSet.contains(player)) {
-                event.setCancelled(true);
-                if (event instanceof EntityDamageByEntityEvent entityDamageByEntityEvent) {
-                    if (entityDamageByEntityEvent.getDamager() instanceof Player damager) {
-                        damager.sendMessage(Component.text("You cant deal damage here!"));
-                    }
-                }
-            }
-        }
-
-    }
 }

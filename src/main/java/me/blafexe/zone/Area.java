@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 /**
- * Represents a 3-dimensional area from 2 corner points.
+ * Represents a 3-dimensional area within a world from 2 corner points.
  */
 public class Area {
 
@@ -51,8 +51,4 @@ public class Area {
         return d >= d1 && d <= d2;
     }
 
-    @Override
-    public String toString() {
-        return "A (" + x1 + " " + y1 + " " + z1 + ")\nB (" + x2 + " " + y2 + " " + z2 + ")";
-    }
 }

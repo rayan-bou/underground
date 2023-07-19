@@ -1,5 +1,6 @@
 package me.blafexe;
 
+import me.blafexe.job.JobEngine;
 import me.blafexe.loader.DummyZoneLoader;
 import me.blafexe.loader.ZoneLoader;
 import me.blafexe.zone.DamageHandler;
@@ -21,6 +22,9 @@ public class Main extends JavaPlugin {
         //Load Zones TODO Load from file
         ZoneLoader zoneLoader = new DummyZoneLoader(damageHandler);
         zoneLoader.getZones().forEach(zoneHandler::addZone);
+
+        JobEngine jobEngine = new JobEngine();
+        getServer().getPluginManager().registerEvents(jobEngine, this);
 
     }
 

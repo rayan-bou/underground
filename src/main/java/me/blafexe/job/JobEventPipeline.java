@@ -1,6 +1,7 @@
 package me.blafexe.job;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerEvent;
 
 import java.util.*;
@@ -12,19 +13,29 @@ public class JobEventPipeline {
 
     //Stores every player's jobs in their respective list
     private final Map<UUID, List<Job>> playerJobListMap;
+    private final List<Job> removedJobs;
 
     public JobEventPipeline() {
         playerJobListMap = new HashMap<>();
+        removedJobs = new LinkedList<>();
     }
 
     /**
      * Takes in an event and distributes it to the respective player's jobs.
-     * @param playerEvent PlayerEvent to be distributed.
+     *
+     * @param event PlayerEvent to be distributed.
+     * @param jobEngine JobEngine that caught the event.
      */
-    public void distributePlayerEvent(PlayerEvent playerEvent) {
+    public void distributeEvent(Event event, JobEngine jobEngine) {
 
-        //Player's UUID
-        UUID uuid = playerEvent.getPlayer().getUniqueId();
+        //Get player
+        UUID uuid;
+        if (event instanceof PlayerEvent playerEvent) {
+            uuid = playerEvent.getPlayer().getUniqueId();
+        } else {
+            return;
+        }
+
         //Get player's job list from uuid
         List<Job> jobList = playerJobListMap.get(uuid);
 
@@ -32,7 +43,9 @@ public class JobEventPipeline {
         if (jobList == null) return;
 
         //Pass event to each job
-        jobList.forEach(job -> job.handleEvent(playerEvent));
+        jobList.forEach(job -> job.handleEvent(event, jobEngine));
+        jobList.removeAll(removedJobs);
+        removedJobs.clear();
 
     }
 
@@ -65,7 +78,8 @@ public class JobEventPipeline {
         if (playerJobListMap.get(player.getUniqueId()) == null) return false;
 
         List<Job> jobList = playerJobListMap.get(player.getUniqueId());
-        jobIsContained = jobList.remove(job);
+        jobIsContained = jobList.contains(job);
+        removedJobs.add(job);
 
         if (jobList.size() < 1) playerJobListMap.remove(player.getUniqueId());
 

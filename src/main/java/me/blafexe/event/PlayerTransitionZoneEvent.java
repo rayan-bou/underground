@@ -14,6 +14,7 @@ public class PlayerTransitionZoneEvent extends PlayerEvent {
         return HANDLER_LIST;
     }
 
+
     private final Zone zone;
     private final boolean isInside;
 

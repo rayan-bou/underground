@@ -62,7 +62,7 @@ public class DamageHandler implements Listener {
     @EventHandler
     public void onPlayerTransitionZone(PlayerTransitionZoneEvent event) {
 
-        if (!event.getZone().allowDamage()) {
+        if (event.getZone().disableDamage()) {
             if (event.isInside()) {
                 protectedPlayerSet.add(event.getPlayer());
             } else {

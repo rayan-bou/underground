@@ -14,6 +14,7 @@ public class PlayerJobEvent extends PlayerEvent {
         return HANDLER_LIST;
     }
 
+
     private final Job job;
     private final Status status;
 

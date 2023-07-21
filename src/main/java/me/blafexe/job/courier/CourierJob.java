@@ -10,7 +10,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class CourierJob implements Job {
@@ -60,18 +62,24 @@ public class CourierJob implements Job {
 
     }
 
+
     @Override
-    public String getCategory() {
-        return "Job";
+    public int getImportance() {
+        return 0;
     }
 
     @Override
-    public String getId() {
+    public Optional<String> getCategory() {
+        return Optional.of("?Job");
+    }
+
+    @Override
+    public @NotNull String getText() {
+        return "Bringe das Item\nzu " + targetLocation.getX() + ", " + targetLocation.getY() + ", " + targetLocation.getZ();
+    }
+
+    @Override
+    public @NotNull String getId() {
         return "job_" + id;
-    }
-
-    @Override
-    public String getText() {
-        return "Ziel " + targetLocation.getX() + ", " + targetLocation.getY() + ", " + targetLocation.getZ();
     }
 }

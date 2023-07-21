@@ -3,7 +3,7 @@ package me.blafexe;
 import me.blafexe.job.JobEngine;
 import me.blafexe.loader.DummyZoneLoader;
 import me.blafexe.loader.ZoneLoader;
-import me.blafexe.scoreboard.InfoviewHandler;
+import me.blafexe.infoview.InfoviewHandler;
 import me.blafexe.zone.DamageHandler;
 import me.blafexe.zone.ZoneHandler;
 import org.bukkit.plugin.java.JavaPlugin;

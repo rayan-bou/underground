@@ -18,12 +18,12 @@ public class EasyScoreboard {
         scoreboard = scoreboardManager.getNewScoreboard();
         Objective objective = scoreboard.registerNewObjective("objective", Criteria.DUMMY, title);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-
         entryMap = new HashMap<>();
     }
 
     public void setVisible(Player player) {
         player.setScoreboard(scoreboard);
+
     }
 
     public void addEntry(String id, Component text) {

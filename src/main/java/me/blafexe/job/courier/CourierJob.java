@@ -11,8 +11,11 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Random;
+
 public class CourierJob implements Job {
 
+    private final int id;
     private ItemStack item;
     private Location targetLocation;
     private double targetRadius;
@@ -24,6 +27,7 @@ public class CourierJob implements Job {
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text("Job Item"));
         item.setItemMeta(meta);
+        id = new Random().nextInt();
     }
 
     @Override
@@ -56,5 +60,18 @@ public class CourierJob implements Job {
 
     }
 
+    @Override
+    public String getCategory() {
+        return "Job";
+    }
 
+    @Override
+    public String getId() {
+        return "job_" + id;
+    }
+
+    @Override
+    public String getText() {
+        return "Ziel " + targetLocation.getX() + ", " + targetLocation.getY() + ", " + targetLocation.getZ();
+    }
 }

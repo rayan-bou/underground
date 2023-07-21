@@ -1,5 +1,6 @@
 package me.blafexe.zone;
 
+import me.blafexe.event.PlayerTransitionZoneEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -49,15 +50,23 @@ public class ZoneHandler implements Listener {
 
         scheduler.runTaskAsynchronously(plugin, () -> {
 
-            Set<Zone> oldSpaces = getContainingSpaces(from);
-            Set<Zone> newSpaces = getContainingSpaces(to);
+            Set<Zone> oldZones = getContainingZones(from);
+            Set<Zone> newZones = getContainingZones(to);
 
-            Set<Zone> tempOldSpaces = Set.copyOf(oldSpaces);
-            oldSpaces.removeAll(newSpaces);
-            newSpaces.removeAll(tempOldSpaces);
+            Set<Zone> tempOldSpaces = Set.copyOf(oldZones);
+            oldZones.removeAll(newZones);
+            newZones.removeAll(tempOldSpaces);
 
-            oldSpaces.forEach(space -> scheduler.runTask(plugin, () -> space.onLeave(player, from, to)));
-            newSpaces.forEach(space -> scheduler.runTask(plugin, () -> space.onEnter(player, from, to)));
+            oldZones.forEach(zone -> scheduler.runTask(plugin, () -> {
+                zone.onLeave(player, from, to);
+                PlayerTransitionZoneEvent zoneEvent = new PlayerTransitionZoneEvent(player, zone, false);
+                plugin.getServer().getPluginManager().callEvent(zoneEvent);
+            }));
+            newZones.forEach(zone -> scheduler.runTask(plugin, () -> {
+                zone.onEnter(player, from, to);
+                PlayerTransitionZoneEvent zoneEvent = new PlayerTransitionZoneEvent(player, zone, true);
+                plugin.getServer().getPluginManager().callEvent(zoneEvent);
+            }));
 
         });
     }
@@ -68,7 +77,7 @@ public class ZoneHandler implements Listener {
      * @param location Probe location.
      * @return A set of spaces that contain the location.
      */
-    public Set<Zone> getContainingSpaces(@Nullable Location location) {
+    public Set<Zone> getContainingZones(@Nullable Location location) {
 
         if (location == null) return Collections.emptySet();
 

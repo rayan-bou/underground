@@ -1,5 +1,6 @@
 package me.blafexe.zone;
 
+import me.blafexe.event.PlayerTransitionZoneEvent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,6 +54,19 @@ public class DamageHandler implements Listener {
                         damager.sendMessage(Component.text("You cant deal damage here!"));
                     }
                 }
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onPlayerTransitionZone(PlayerTransitionZoneEvent event) {
+
+        if (!event.getZone().allowDamage()) {
+            if (event.isInside()) {
+                protectedPlayerSet.add(event.getPlayer());
+            } else {
+                protectedPlayerSet.remove(event.getPlayer());
             }
         }
 

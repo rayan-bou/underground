@@ -4,6 +4,7 @@ import me.blafexe.job.JobEngine;
 import me.blafexe.loader.DummyZoneLoader;
 import me.blafexe.loader.ZoneLoader;
 import me.blafexe.infoview.InfoviewHandler;
+import me.blafexe.player.StatsHandler;
 import me.blafexe.zone.DamageHandler;
 import me.blafexe.zone.ZoneHandler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,9 +15,8 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
 
-        //Infoview
-        InfoviewHandler infoviewHandler = new InfoviewHandler(this);
-        getServer().getPluginManager().registerEvents(infoviewHandler, this);
+        StatsHandler statsHandler = new StatsHandler(this);
+        getServer().getPluginManager().registerEvents(statsHandler, this);
 
         ZoneHandler zoneHandler = new ZoneHandler(this);
         getServer().getPluginManager().registerEvents(zoneHandler, this);
@@ -30,6 +30,10 @@ public class Main extends JavaPlugin {
 
         JobEngine jobEngine = new JobEngine(this);
         getServer().getPluginManager().registerEvents(jobEngine, this);
+
+        //Infoview
+        InfoviewHandler infoviewHandler = new InfoviewHandler(this, statsHandler);
+        getServer().getPluginManager().registerEvents(infoviewHandler, this);
 
     }
 

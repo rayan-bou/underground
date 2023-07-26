@@ -64,6 +64,19 @@ public class Infoview {
     }
 
     /**
+     * Searches the elements for any element with a specified id.
+     * @param id The id.
+     * @return An Optional, containing an element with the specified id.
+     */
+    public Optional<InfoviewElement> getElement(@NotNull String id) {
+
+        return elements.stream()
+                .filter(infoviewElement -> infoviewElement.getId().equals(id))
+                .findFirst();
+
+    }
+
+    /**
      * Renders the elements and any changes that may have occurred since the last call onto the scoreboard.
      * Uses the current element sorting.
      */

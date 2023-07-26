@@ -1,6 +1,5 @@
 package me.blafexe.event;
 
-import me.blafexe.player.Stats;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
@@ -14,16 +13,8 @@ public class PlayerStatsUpdateEvent extends PlayerEvent {
         return HANDLER_LIST;
     }
 
-
-    private final Stats stats;
-
-    public PlayerStatsUpdateEvent(Player player, Stats stats) {
+    public PlayerStatsUpdateEvent(Player player) {
         super(player);
-        this.stats = stats;
-    }
-
-    public Stats getStats() {
-        return stats;
     }
 
     @Override

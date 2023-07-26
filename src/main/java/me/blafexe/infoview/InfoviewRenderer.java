@@ -1,7 +1,5 @@
 package me.blafexe.infoview;
 
-import org.bukkit.scoreboard.Score;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +32,7 @@ public class InfoviewRenderer {
             if (!Objects.equals(lastCategory, elementCategory)) {
                 lastCategory = elementCategory;
                 strings.add(blankLineCreator.next());
-                if (isElementCategoryVisible(elementCategory)) strings.add(elementCategory);
+                if (isElementCategoryHidden(elementCategory)) strings.add(elementCategory);
             }
             strings.addAll(Arrays.asList(convertElementText(element.getText())));
 
@@ -62,7 +60,7 @@ public class InfoviewRenderer {
      * @param elementTitle String provided by <code>InfoviewElement's getCategory</code>-method.
      * @return True, if category name is meant to be hidden.
      */
-    private boolean isElementCategoryVisible(String elementTitle) {
+    private boolean isElementCategoryHidden(String elementTitle) {
         return elementTitle != null && !elementTitle.startsWith("?");
     }
 

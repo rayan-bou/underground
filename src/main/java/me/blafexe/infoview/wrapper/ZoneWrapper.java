@@ -1,10 +1,19 @@
-package me.blafexe.infoview;
+package me.blafexe.infoview.wrapper;
 
+import me.blafexe.infoview.InfoviewElement;
+import me.blafexe.zone.Zone;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class ZoneDummy implements InfoviewElement {
+public class ZoneWrapper implements InfoviewElement {
+
+    private Zone zone;
+
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
+
     @Override
     public int getImportance() {
         return 0;
@@ -17,7 +26,8 @@ public class ZoneDummy implements InfoviewElement {
 
     @Override
     public @NotNull String getText() {
-        return "Nicht sicher";
+        if (zone == null || !zone.disableDamage()) return "Nicht sicher";
+        else return "Sicher";
     }
 
     @Override

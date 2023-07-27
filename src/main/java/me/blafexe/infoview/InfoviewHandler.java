@@ -50,7 +50,7 @@ public class InfoviewHandler implements Listener {
     private Infoview initializeInfoview(Player player) {
 
         Infoview infoview = new Infoview(
-                Component.text("Provinglife").decorate(TextDecoration.BOLD).color(() -> 0x228B22),
+                Component.text("Provinglife").decorate(TextDecoration.BOLD).color(() -> 0x40b840),
                 plugin.getServer().getScoreboardManager()
         );
 

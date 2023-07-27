@@ -20,9 +20,9 @@ public class LevelWrapper implements InfoviewElement {
 
         String formatOn = "§a";
         String formatOff = "§7";
-        String formatNumber = "§f§l";
+        String formatNumber = "§f";
         char barChar = '|';
-        int barSize = 20;
+        int barSize = 24;
         float progress = (float) Math.min(1, playerStats.getLevelProgress());
         int barOnEnd = Math.round(progress * barSize);
 

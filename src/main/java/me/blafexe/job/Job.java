@@ -1,6 +1,5 @@
 package me.blafexe.job;
 
-import me.blafexe.infoview.InfoviewElement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -8,7 +7,7 @@ import org.bukkit.event.Event;
  * A job can be given to a player. The player has to fulfill a certain goal in order to complete the job.
  * Requires a <code>JobEngine</code> object in order to assign the job to a player.
  */
-public interface Job extends InfoviewElement {
+public interface Job {
 
     /**
      * Starts the job.
